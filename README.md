@@ -23,7 +23,7 @@ All missing lab and vitals values were imputed via sample and hold from observat
 
 The autoencoder neural network uses the input features as the targets and applys back propagation to optimize the weights to obtain the machine-generated features. It has two encoder layers and two decoder layers. Gaussian noise was incorporated into the input data and then the noisy data was mapped to clean data to enhance its generalization. Additionally, two regularization techniques, dropout and L1 regularization, were employed to decrease the the likelihood of overfitting. By using the denoising and sparse autoencoder model, compressed features were obtained and then further fitted to the super learner model. In our case, the encoder included an input layer of 49 features, a second layer of 30 features and a bottleneck with 15 nodes, corresponding to the 15 abstracted features calculated by the network. 
 
-<img width="450" alt="autoencoder" src="https://user-images.githubusercontent.com/42804316/57733465-94b65180-766d-11e9-83b5-0884e4bced92.png">
+<img width="420" alt="autoencoder" src="https://user-images.githubusercontent.com/42804316/57733465-94b65180-766d-11e9-83b5-0884e4bced92.png">
 
 ## Metrics Used
 
@@ -48,7 +48,7 @@ Considering different models may detect different patients, so a super learner w
 Random forest has the highest AUC and exceeds super learner by a very little. But based on F1, the super learner leads among all the models. 
 As mentioned, partial ROC curves was focused which corresponds to the high thresholds and helps prevent the alarm fatigue for clinicians. In the partial ROC curves, the super learner separates itself from other models, which are reflected well by F-1 score. It shows that the F1 is the desirable metric to evaluate model’s performances in applications with low event rates.
 
-<img width="362" alt="bar_plot" src="https://user-images.githubusercontent.com/42804316/57736749-21b1d880-7677-11e9-9b20-0544dd5eaf98.png"><img width="372" alt="ROC_curve" src="https://user-images.githubusercontent.com/42804316/57736862-8ff69b00-7677-11e9-9e5f-c01d2a0df589.png">
+<img width="45%" alt="bar_plot" src="https://user-images.githubusercontent.com/42804316/57736749-21b1d880-7677-11e9-9b20-0544dd5eaf98.png"><img width="55%" alt="ROC_curve" src="https://user-images.githubusercontent.com/42804316/57736862-8ff69b00-7677-11e9-9e5f-c01d2a0df589.png">
 
 In conclusion, the random forest and super learning perform the best in our case, and F1 score can best represent the model’s performance in the application with low event rate.
 
