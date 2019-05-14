@@ -13,7 +13,7 @@ _The dataset is public in UVA DataVerse_.
 
 The outcomes were represented by binary values, with “1” indicating an event and “0” indicating a non-event. Event means transferring to ICU or death. As shown in Figure I, if the patient never had to be transferred to ICU during his/her stay, his/her records were all labeled as “0”; Otherwise, the record started being labeled as “1” 24 hours prior to the transfer. 
 
-<img width="380" alt="event_definition" src="https://user-images.githubusercontent.com/42804316/57731585-fcb66900-7668-11e9-9b40-b2a8620ab3b0.png"><br />*Recorded every 15 mins
+<img width="340" alt="event_definition" src="https://user-images.githubusercontent.com/42804316/57731585-fcb66900-7668-11e9-9b40-b2a8620ab3b0.png"><br />*Recorded every 15 mins
 
 **Data Preprocessing**
 
