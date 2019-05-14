@@ -1,6 +1,6 @@
 # Prediction_of_Patients_Deterioration_in_The_Cardiac_Wards
 
-This project focuses on detecting deterioration of acutely ill patients in the cardiac ward at the University of Virginia Health System. Patients in the cardiac ward are expected to recover from a variety of cardiovascular procedures, but roughly 5% of patients deteriorate and have to be transferred to the Intensive Care Unit (ICU) for elevated care. This is an important problem because the probability of mortality increases by hour for the patients that are delayed to get into the ICU. In this work, a super learner was built by stacking logistic regression, random forest, and gradient boosting models. Furthermore, a denoising auto-encoder was created to generate computer-derived features, the results of which were fed to machine learning models to predict patient deterioration. Given that only 1% of observations are labeled as events, the F1 score was used as the primary metric to assess the performance of each model; area under the curve (AUC) was also considered. 
+This project focuses on detecting deterioration of acutely ill patients in the cardiac ward at the University of Virginia Health System. Patients in the cardiac ward are expected to recover from a variety of cardiovascular procedures, but roughly 5% of patients deteriorate and have to be transferred to the Intensive Care Unit (ICU) for elevated care. This is an important problem because the probability of mortality increases by hour for the patients that are delayed to get into the ICU. In this work, a super learner was built by stacking logistic regression, random forest, and gradient boosting models. Given that only 1% of observations are labeled as events, the F1 score was used as the primary metric to assess the performance of each model; area under the curve (AUC) was also considered. 
 
 ## Data 
 
@@ -15,7 +15,15 @@ The outcomes were represented by binary values, with “1” indicating an event
 
 <img width="419" alt="event_definition" src="https://user-images.githubusercontent.com/42804316/57731585-fcb66900-7668-11e9-9b40-b2a8620ab3b0.png"><br />*Recorded every 15 mins
 
+**Data Preprocessing**
 
+All missing lab and vitals values were imputed via sample and hold from observations up to 48 hours prior through the following 15 minutes chunks until next step updated. The remaining missing observations (less than 1%) were imputed with the median values. The dataset was highly imbalanced with only 1% of entries classified as events out of two million records. Synthetic Minority Over-Sampling Technique (SMOTE) is implemented to increase the number of the minority class instances and downsample the majority class as well. Though the dataset contained repeated measures, each record was treated as an independent observation.
+
+**Autoencoder**
+
+The autoencoder neural network uses the input features as the targets and applys back propagation to optimize the weights to obtain the machine-generated features. It has two encoder layers and two decoder layers. Gaussian noise was incorporated into the input data and then the noisy data was mapped to clean data to enhance its generalization. Additionally, two regularization techniques, dropout and L1 regularization, were employed to decrease the the likelihood of overfitting. By using the denoising and sparse autoencoder model, compressed features were obtained and then further fitted to the super learner model. In our case, the encoder included an input layer of 49 features, a second layer of 30 features and a bottleneck with 15 nodes, corresponding to the 15 abstracted features calculated by the network. 
+
+<img width="713" alt="autoencoder" src="https://user-images.githubusercontent.com/42804316/57733465-94b65180-766d-11e9-83b5-0884e4bced92.png">
 
 
 
