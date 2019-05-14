@@ -23,7 +23,7 @@ All missing lab and vitals values were imputed via sample and hold from observat
 
 The autoencoder neural network uses the input features as the targets and applys back propagation to optimize the weights to obtain the machine-generated features. It has two encoder layers and two decoder layers. Gaussian noise was incorporated into the input data and then the noisy data was mapped to clean data to enhance its generalization. Additionally, two regularization techniques, dropout and L1 regularization, were employed to decrease the the likelihood of overfitting. By using the denoising and sparse autoencoder model, compressed features were obtained and then further fitted to the super learner model. In our case, the encoder included an input layer of 49 features, a second layer of 30 features and a bottleneck with 15 nodes, corresponding to the 15 abstracted features calculated by the network. 
 
-<img width="713" alt="autoencoder" src="https://user-images.githubusercontent.com/42804316/57733465-94b65180-766d-11e9-83b5-0884e4bced92.png">
+<img width="500" alt="autoencoder" src="https://user-images.githubusercontent.com/42804316/57733465-94b65180-766d-11e9-83b5-0884e4bced92.png">
 
 
 
