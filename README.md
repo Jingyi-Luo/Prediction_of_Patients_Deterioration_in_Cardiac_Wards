@@ -33,10 +33,19 @@ Another metric used was the F1 score, which is the harmonic mean of precision an
 
 ## Machine Learning Algorithms
 
+**Logistic Regression** **Random Forest** **Extreme Gradient Boosting (XGBoost)**
 
+Logistic regression is robust to class imbalance, but lacks in flexibility. The risk of clinical deterioration is not an additive function of patients’ physiological parameters. Crossing certain thresholds of some variables are more likely to be an indication of high risk which might be missed in logistic regression. Comparatively, tree-based models are more appropriate for our application because they were designed to find these thresholds. It adds additional randomness to the training process which provides a more accurate and stable prediction. XGBoost is another popular supervised learning algorithm for solving classification problems, reducing running time by implementing parallel processing.
+
+**Super Learner**
+
+Considering different models may detect different patients, so a super learner was developed by stacking different models together. The idea behind this approach was that taking all of the individual model predictions into account and combining them into a single prediction would be more effective in detecting a wider variety of patients than any single model. The super learner was fed predicted probabilities from the candidate learners (random forest, logistic regression and XGBoost) and combined them into a single probability. Rather than build a single model using all of the features, a probability was generated per candidate learner per category of feature. These probabilities were, in turn, used as inputs to a larger logistic regression model to produce a probability for each observation in the dataset. The architecture of super learner is shown as below.
+
+<img width="872" alt="super_learner" src="https://user-images.githubusercontent.com/42804316/57736115-d696c600-7674-11e9-8968-e9a40e1fe91f.png">
 
 ## Results
 
 
 
 
+It is worth noticing that Pulse and Resp are heart rate and respiratory rate respectively from nurse records, and hr and edrk are the counterparts from ECG data. The feature importance chart (Table I) shows that the nurse recorded variables were more influential on the model than their ECG derived counterparts, which can likely be attributed to the incorporation of nurses intuition.
