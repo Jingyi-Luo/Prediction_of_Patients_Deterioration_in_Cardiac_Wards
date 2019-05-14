@@ -27,7 +27,7 @@ The autoencoder neural network uses the input features as the targets and applys
 
 ## Metrics Used
 
-Accuracy was not appropriate here due to the class imbalance. Although AUC showcases model performance across a wide range of thresholds and risk levels, a metric that better expresses model performance at low false positive rates was required to avoid alarm fatigue. Therefore, the bottom left hand corner of a Receiver Operating Characteristic (ROC) curve was focused because it corresponds to the lower false positive rate.
+Accuracy was not appropriate here due to the class imbalance. Although AUC showcases model performance across a wide range of thresholds and risk levels, a metric that better expresses model performance at low false positive rates was required to avoid alarm fatigue. Therefore, the bottom left hand corner of a Receiver Operating Characteristic (ROC) curve (partial ROC curve) was focused because it corresponds to the lower false positive rate.
 
 Another metric used was the F1 score, which is the harmonic mean of precision and recall. A good F1 means that the model identifies the real event and avoids being disturbed by false alarms. The F1 score yields a more accurate reflection of model performance at low false positive rates. 
 
@@ -45,7 +45,25 @@ Considering different models may detect different patients, so a super learner w
 
 ## Results
 
+Random forest has the highest AUC and exceeds super learner by a very little. But based on F1, the super learner leads among all the models. 
+As mentioned, partial ROC curves was focused which corresponds to the high thresholds and helps prevent the alarm fatigue for clinicians. In the partial ROC curves, the super learner separates itself from other models, which are reflected well by F-1 score. It shows that the F1 is the desirable metric to evaluate model’s performances in applications with low event rates.
+
+<img width="362" alt="bar_plot" src="https://user-images.githubusercontent.com/42804316/57736749-21b1d880-7677-11e9-9b20-0544dd5eaf98.png"><img width="380" alt="ROC_curve" src="https://user-images.githubusercontent.com/42804316/57736754-25ddf600-7677-11e9-8393-61089bbeeaec.png">
+
+In conclusion, the random forest and super learning perform the best in our case, and F1 score can best represent the model’s performance in the application with low event rate.
 
 
 
-It is worth noticing that Pulse and Resp are heart rate and respiratory rate respectively from nurse records, and hr and edrk are the counterparts from ECG data. The feature importance chart (Table I) shows that the nurse recorded variables were more influential on the model than their ECG derived counterparts, which can likely be attributed to the incorporation of nurses intuition.
+
+
+
+
+
+
+
+
+
+
+
+
+
