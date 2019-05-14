@@ -33,7 +33,7 @@ Another metric used was the F1 score, which is the harmonic mean of precision an
 
 ## Machine Learning Algorithms
 
-**Logistic Regression** **Random Forest** **Extreme Gradient Boosting (XGBoost)**
+**Logistic Regression**, **Random Forest**, **Extreme Gradient Boosting (XGBoost)**
 
 Logistic regression is robust to class imbalance, but lacks in flexibility. The risk of clinical deterioration is not an additive function of patients’ physiological parameters. Crossing certain thresholds of some variables are more likely to be an indication of high risk which might be missed in logistic regression. Comparatively, tree-based models are more appropriate for our application because they were designed to find these thresholds. It adds additional randomness to the training process which provides a more accurate and stable prediction. XGBoost is another popular supervised learning algorithm for solving classification problems, reducing running time by implementing parallel processing.
 
@@ -48,7 +48,7 @@ Considering different models may detect different patients, so a super learner w
 Random forest has the highest AUC and exceeds super learner by a very little. But based on F1, the super learner leads among all the models. 
 As mentioned, partial ROC curves was focused which corresponds to the high thresholds and helps prevent the alarm fatigue for clinicians. In the partial ROC curves, the super learner separates itself from other models, which are reflected well by F-1 score. It shows that the F1 is the desirable metric to evaluate model’s performances in applications with low event rates.
 
-<img width="44%" alt="bar_plot" src="https://user-images.githubusercontent.com/42804316/57736749-21b1d880-7677-11e9-9b20-0544dd5eaf98.png">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<img width="45%" alt="ROC_curve" src="https://user-images.githubusercontent.com/42804316/57736862-8ff69b00-7677-11e9-9e5f-c01d2a0df589.png">
+<img width="44%" alt="bar_plot" src="https://user-images.githubusercontent.com/42804316/57736749-21b1d880-7677-11e9-9b20-0544dd5eaf98.png">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<img width="45%" alt="ROC_curve" src="https://user-images.githubusercontent.com/42804316/57736862-8ff69b00-7677-11e9-9e5f-c01d2a0df589.png"><br /> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Fig 1. F1 score and AUC (left) and ROC Curves (right) For The Four Prediction Models
 
 In conclusion, the random forest and super learning perform the best in our case, and F1 score can best represent the model’s performance in the application with low event rate.
 
