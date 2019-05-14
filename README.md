@@ -13,7 +13,7 @@ _The dataset is public in UVA DataVerse_.
 
 The outcomes were represented by binary values, with “1” indicating an event and “0” indicating a non-event. Event means transferring to ICU or death. As shown in Figure I, if the patient never had to be transferred to ICU during his/her stay, his/her records were all labeled as “0”; Otherwise, the record started being labeled as “1” 24 hours prior to the transfer. 
 
-<img width="419" alt="event_definition" src="https://user-images.githubusercontent.com/42804316/57731585-fcb66900-7668-11e9-9b40-b2a8620ab3b0.png"><br />*Recorded every 15 mins
+<img width="380" alt="event_definition" src="https://user-images.githubusercontent.com/42804316/57731585-fcb66900-7668-11e9-9b40-b2a8620ab3b0.png"><br />*Recorded every 15 mins
 
 **Data Preprocessing**
 
@@ -23,7 +23,7 @@ All missing lab and vitals values were imputed via sample and hold from observat
 
 The autoencoder neural network uses the input features as the targets and applys back propagation to optimize the weights to obtain the machine-generated features. It has two encoder layers and two decoder layers. Gaussian noise was incorporated into the input data and then the noisy data was mapped to clean data to enhance its generalization. Additionally, two regularization techniques, dropout and L1 regularization, were employed to decrease the the likelihood of overfitting. By using the denoising and sparse autoencoder model, compressed features were obtained and then further fitted to the super learner model. In our case, the encoder included an input layer of 49 features, a second layer of 30 features and a bottleneck with 15 nodes, corresponding to the 15 abstracted features calculated by the network. 
 
-<img width="500" alt="autoencoder" src="https://user-images.githubusercontent.com/42804316/57733465-94b65180-766d-11e9-83b5-0884e4bced92.png">
+<img width="450" alt="autoencoder" src="https://user-images.githubusercontent.com/42804316/57733465-94b65180-766d-11e9-83b5-0884e4bced92.png">
 
 ## Metrics Used
 
@@ -41,7 +41,7 @@ Logistic regression is robust to class imbalance, but lacks in flexibility. The 
 
 Considering different models may detect different patients, so a super learner was developed by stacking different models together. The idea behind this approach was that taking all of the individual model predictions into account and combining them into a single prediction would be more effective in detecting a wider variety of patients than any single model. The super learner was fed predicted probabilities from the candidate learners (random forest, logistic regression and XGBoost) and combined them into a single probability. Rather than build a single model using all of the features, a probability was generated per candidate learner per category of feature. These probabilities were, in turn, used as inputs to a larger logistic regression model to produce a probability for each observation in the dataset. The architecture of super learner is shown as below.
 
-<img width="500" alt="super_learner" src="https://user-images.githubusercontent.com/42804316/57736183-16f64400-7675-11e9-9c1b-dbdff893e665.png">
+<img width="600" alt="super_learner" src="https://user-images.githubusercontent.com/42804316/57736183-16f64400-7675-11e9-9c1b-dbdff893e665.png">
 
 ## Results
 
