@@ -25,6 +25,18 @@ The autoencoder neural network uses the input features as the targets and applys
 
 <img width="500" alt="autoencoder" src="https://user-images.githubusercontent.com/42804316/57733465-94b65180-766d-11e9-83b5-0884e4bced92.png">
 
+## Metrics Used
+
+Accuracy was not appropriate here due to the class imbalance. Although AUC showcases model performance across a wide range of thresholds and risk levels, a metric that better expresses model performance at low false positive rates was required to avoid alarm fatigue. Therefore, the bottom left hand corner of a Receiver Operating Characteristic (ROC) curve was focused because it corresponds to the lower false positive rate.
+
+Another metric used was the F1 score, which is the harmonic mean of precision and recall. A good F1 means that the model identifies the real event and avoids being disturbed by false alarms. The F1 score yields a more accurate reflection of model performance at low false positive rates. 
+
+## Machine Learning Algorithms
+
+
+
+## Results
+
 
 
 
