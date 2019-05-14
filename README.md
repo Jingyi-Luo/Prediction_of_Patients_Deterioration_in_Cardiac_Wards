@@ -41,7 +41,7 @@ Logistic regression is robust to class imbalance, but lacks in flexibility. The 
 
 Considering different models may detect different patients, so a super learner was developed by stacking different models together. The idea behind this approach was that taking all of the individual model predictions into account and combining them into a single prediction would be more effective in detecting a wider variety of patients than any single model. The super learner was fed predicted probabilities from the candidate learners (random forest, logistic regression and XGBoost) and combined them into a single probability. Rather than build a single model using all of the features, a probability was generated per candidate learner per category of feature. These probabilities were, in turn, used as inputs to a larger logistic regression model to produce a probability for each observation in the dataset. The architecture of super learner is shown as below.
 
-<img width="867" alt="super_learner" src="https://user-images.githubusercontent.com/42804316/57736183-16f64400-7675-11e9-9c1b-dbdff893e665.png">
+<img width="500" alt="super_learner" src="https://user-images.githubusercontent.com/42804316/57736183-16f64400-7675-11e9-9c1b-dbdff893e665.png">
 
 ## Results
 
