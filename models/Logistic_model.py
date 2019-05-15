@@ -3,14 +3,15 @@ import os
 import matplotlib.pyplot as plt
 plt.rc('font', size=14)
 import numpy as np
-
 from sklearn.linear_model import LogisticRegression
+
+#from sklearn.linear_model import LogisticRegression
 import seaborn as sns
 sns.set(style='white')
 sns.set(style='whitegrid', color_codes=True)
 
 #
-working_dir = '/Users/ljyi/Desktop/capstone/capstone8'
+working_dir = '/Users/ljyi/Desktop/capstone/capstone8/Logistic_regression'
 
 os.chdir(working_dir)
 #
@@ -45,21 +46,21 @@ test_id = [avar for avar in id_unique if avar not in train_id]
 
 # get rid of variables with two many missing values
 data_df = raw_data
-drop_cols = ['n_evts', 'LOS', 'ICU_Pt_Days', 'Mort', 'age']  # why not age?
+drop_cols = ['n_evts', 'LOS', 'ICU_Pt_Days', 'Mort', 'age', 'race', 'svc']  # why not age?
 data_df.drop(col_nan_index, inplace=True, axis=1)
 data_df.drop(drop_cols, inplace=True, axis=1)
 
-# 'race' with three levels and 'svc' with four levels are categorical data
-dummy_race = pd.get_dummies(data_df['race'])
-data_df_dummy = pd.concat([data_df, dummy_race], axis=1)
-data_df_dummy.drop(columns=['race', 'oth'], inplace=True, axis=1) # dummy variable trap
+## 'race' with three levels and 'svc' with four levels are categorical data
+#dummy_race = pd.get_dummies(data_df['race'])
+#data_df_dummy = pd.concat([data_df, dummy_race], axis=1)
+#data_df_dummy.drop(columns=['race', 'oth'], inplace=True, axis=1) # dummy variable trap
+#
+#dummy_svc = pd.get_dummies(data_df['svc'])
+#df_svc_dummy = pd.concat([data_df_dummy, dummy_svc], axis=1)
+#df_svc_dummy.drop(columns=['svc', 'Other'], inplace=True, axis=1)
 
-dummy_svc = pd.get_dummies(data_df['svc'])
-df_svc_dummy = pd.concat([data_df_dummy, dummy_svc], axis=1)
-df_svc_dummy.drop(columns=['svc', 'Other'], inplace=True, axis=1)
-
-list(df_svc_dummy.columns)
-df_dummy = df_svc_dummy
+list(data_df.columns)
+df_dummy = data_df
 
 # split data into training and testing sets
 df_dummy.set_index('id', inplace=True)
@@ -84,7 +85,7 @@ y_train = X_y_train.iloc[train_index, X_y_train.columns == 'y']
 X_test = X_y_test.iloc[:, X_y_test.columns != 'y']
 y_test = X_y_test.iloc[:, X_y_test.columns == 'y']
 y_test = y_test.values.flatten()
-
+ 
 len(y_train)
 #1520840
 np.sum(y_train == True)
@@ -142,6 +143,15 @@ X_train_df = X_train_balanced
 y_train_sample = y_train_balanced
 y_train_sample = y_train_sample.values.flatten()
 
+# add shock index
+#SI_train = X_train_df['Pulse']/X_train_df['SBP']
+#SI_test = X_test['Pulse']/X_test['SBP']
+#X_train_df['SI'] = SI_train
+#X_test['SI'] = SI_test
+
+## get column names of X_test
+cols_test = X_test.columns
+
 # feature scaling
 from sklearn.preprocessing import StandardScaler
 sc = StandardScaler()
@@ -149,10 +159,19 @@ X_train_sample = sc.fit_transform(X_train_df)
 X_test = sc.transform(X_test)
 type(X_train_sample)
 
+# change array to dataframe adding column names
+X_train_sample = pd.DataFrame(X_train_sample)
+X_train_sample.columns = X_train_df.columns
+X_test = pd.DataFrame(X_test)
+X_test.columns = cols_test
+
+
 #==============================================================================
 #                             Logistic Regression
 #==============================================================================
 from sklearn import metrics
+from sklearn.metrics import roc_curve
+
 logreg = LogisticRegression(random_state=0)
 logreg.fit(X_train_sample, y_train_sample)
 
@@ -164,11 +183,15 @@ y_pred_logreg_S1 = (y_pred_proba_logreg >= threshold_S1_logreg)
 
 # Confusion Matrix
 cnf_matrix_logreg = metrics.confusion_matrix(y_test, y_pred_logreg_S1)
-Se_logreg = cnf_matrix_logreg[1, 1]/(cnf_matrix_logreg[0, 1]+cnf_matrix_logreg[1, 1])
-p_plus_logreg = cnf_matrix_logreg[1, 1]/(cnf_matrix_logreg[1, 1]+cnf_matrix_logreg[1, 0])
-score_1_logreg = min(Se_logreg, p_plus_logreg)
+sensitivity_logreg = cnf_matrix_logreg[1, 1]/(cnf_matrix_logreg[0, 1]+cnf_matrix_logreg[1, 1]) # 
+precision_logreg = cnf_matrix_logreg[1, 1]/(cnf_matrix_logreg[1, 1]+cnf_matrix_logreg[1, 0])
+FPR_logreg = cnf_matrix_logreg[1, 0]/(cnf_matrix_logreg[0, 0]+cnf_matrix_logreg[1, 0]) # false positive rate for ROC curve
+score_1_logreg = min(sensitivity_logreg, precision_logreg)
 print('Logistic Regression Score 1: {0:8.3f}'.format(score_1_logreg))
-# 0.074
+
+# F1 score
+F1_logreg = 2*sensitivity_logreg*precision_logreg/(sensitivity_logreg+precision_logreg)
+print('Logistic Regression F1 Score: {0:8.3f}'.format(F1_logreg))
 
 # ROC Curve: the receiver operating characteristic curve
 from sklearn.metrics import roc_auc_score
@@ -176,43 +199,49 @@ from sklearn.metrics import roc_auc_score
 y_pred_proba_logreg = logreg.predict_proba(X_test)[:, 1]
 logit_roc_auc = roc_auc_score(y_test, y_pred_proba_logreg)
 print('Logistic Regression roc: {0:8.3f}'.format(logit_roc_auc))
-# 0.705 
 
-# summary:
-# Score 1: 0.021
-# Score 1 with 1% threshold: 0.074
-# AUC: 0.705
+print('Logistic Sensivity (True Positive Rate): {0:8.3f}'.format(sensitivity_logreg))  
+print('Logistic Precision: {0:8.3f}'.format(precision_logreg))
+print('Logistic False Positive Rate: {0:8.3f}'.format(FPR_logreg))
 
-#==============================================================================
-#                             Random Forest
-#==============================================================================
-from sklearn import metrics
-from sklearn.ensemble import RandomForestClassifier
-from sklearn.metrics import roc_auc_score
+# ======== with shock index (SI) =========
+#Logistic Regression Score 1:    0.065
+#Logistic Regression F1 Score:    0.065
+#Logistic Regression roc:    0.715
+#Logistic Sensivity (True Positive Rate):    0.066
+#Logistic Precision:    0.065
+#Logistic False Positive Rate:    0.010
 
-forest_clf = RandomForestClassifier(n_estimators=600, n_jobs = -1, random_state=0)
-forest_clf.fit(X_train_sample, y_train_sample)
+# ======== without shock index (SI) =========
+#Logistic Regression Score 1:    0.066
+#Logistic Regression F1 Score:    0.067
+#Logistic Regression roc:    0.710
+#Logistic Sensivity (True Positive Rate):    0.068
+#Logistic Precision:    0.066
+#Logistic False Positive Rate:    0.010
 
-# Score 1 - choosing threshold
-y_pred_proba_RF = forest_clf.predict_proba(X_test)[:, 1]
-threshold_S1_RF = np.percentile(y_pred_proba_RF,99)
-threshold_S1_RF # 0.373
-y_pred_RF_S1 = (y_pred_proba_RF >= threshold_S1_RF) 
-# Confusion Matrix
-cnf_matrix_RF = metrics.confusion_matrix(y_test, y_pred_RF_S1)
-Se_RF = cnf_matrix_RF[1, 1]/(cnf_matrix_RF[0, 1]+cnf_matrix_RF[1, 1])
-p_plus_RF = cnf_matrix_RF[1, 1]/(cnf_matrix_RF[1, 1]+cnf_matrix_RF[1, 0])
-score_1_RF = min(Se_RF, p_plus_RF)
-print('Logistic Regression Score 1: {0:8.3f}'.format(score_1_RF))
-# 0.023
 
-# ROC Curve: the receiver operating characteristic curve
-y_pred_proba_forest = forest_clf.predict_proba(X_test)[:, 1]
-forest_roc_auc = roc_auc_score(y_test, y_pred_proba_forest)
-print('Random Forest roc: {0:8.3f}'.format(forest_roc_auc))
- 
-# summary:
-# Score 1: 0.003
-# Score 1 with 1% threshold: 0.024
-# AUC: 0.709
+fpr, tpr, thresholds = roc_curve(y_test, y_pred_proba_logreg)
+# 
+fid = open('roc_logistic_regression.txt', 'w')
+for i in range(len(fpr)):
+    fid.write('{0:10.6f} {1:10.6f} {2:10.6f} \n'.format(fpr[i], tpr[i], thresholds[i]))
+fid.close()
+#
+# logreg.classes_
+# array([False,  True])
+
+plt.figure(figsize=(8,6))
+plt.rcParams['font.size'] = 18
+plt.plot(fpr, tpr, label = "Logistic Regression (area = {:0.2f})".format(logit_roc_auc))
+plt.plot([0, 1], [0, 1], 'r--')
+plt.xlim([0.0, 1.0])
+plt.ylim([0.0, 1.05])
+plt.xlabel('False Positive Rate')
+plt.ylabel('True Positive Rate')
+plt.title('Receiver Operatting Characteristic: Logistic Regression')
+plt.legend(loc='lower right')
+plt.savefig('Log_ROC')
+plt.close()
+
 
