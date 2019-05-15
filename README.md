@@ -2,7 +2,7 @@
 
 This project focuses on detecting deterioration of acutely ill patients in the cardiac ward at the University of Virginia Health System. Patients in the cardiac ward are expected to recover from a variety of cardiovascular procedures, but roughly 5% of patients deteriorate and have to be transferred to the Intensive Care Unit (ICU) for elevated care. This is an important problem because the probability of mortality increases by hour for the patients that are delayed to get into the ICU. In this work, a super learner was built by stacking logistic regression, random forest, and gradient boosting models to predict whether a patient needs to be transferred to ICU. Given that only 1% of observations are labeled as events, the F1 score was used as the primary metric to assess the performance of each model; area under the curve (AUC) was also considered. 
 
-Language used: _R_ and _Python_
+**Language used: _R_ and _Python_**
 
 ## Data 
 
