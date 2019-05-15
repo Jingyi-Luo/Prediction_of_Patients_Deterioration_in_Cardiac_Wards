@@ -27,6 +27,8 @@ The autoencoder neural network uses the input features as the targets and applys
 
 <img width="420" alt="autoencoder" src="https://user-images.githubusercontent.com/42804316/57733465-94b65180-766d-11e9-83b5-0884e4bced92.png">
 
+Those machine-generated features were found to be of high importance. However, the computer generated features did not have a significant effect on the model performance and as they were less interpretable than the original features they were not used in the final model.
+
 ## Metrics Used
 
 Accuracy was not appropriate here due to the class imbalance. Although AUC showcases model performance across a wide range of thresholds and risk levels, a metric that better expresses model performance at low false positive rates was required to avoid alarm fatigue. Therefore, the bottom left hand corner of a Receiver Operating Characteristic (ROC) curve (partial ROC curve) was focused because it corresponds to the lower false positive rate.
